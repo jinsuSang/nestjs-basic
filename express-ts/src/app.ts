@@ -1,7 +1,5 @@
 import * as express from 'express'
 import catRouter from './cats/cats.route'
-const app: express.Express = express()
-const port = 8080
 
 class Server {
   public app: express.Application
@@ -12,7 +10,7 @@ class Server {
   }
 
   private setRouer() {
-    app.use('/cats', catRouter)
+    this.app.use('/cats', catRouter)
   }
 
   private setMiddleware() {
@@ -32,6 +30,7 @@ class Server {
   }
 
   public listen() {
+    const port = 3000
     this.setMiddleware()
     this.app.listen(port, () => {
       console.log(`Start server: http://localhost:${port}`)
