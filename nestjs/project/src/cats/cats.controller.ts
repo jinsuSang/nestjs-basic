@@ -1,4 +1,13 @@
-import { Controller, Delete, Get, Patch, Post, Put } from '@nestjs/common'
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Patch,
+  Post,
+  Put,
+} from '@nestjs/common'
 import { CatsService } from './cats.service'
 
 @Controller('cats')
@@ -7,7 +16,7 @@ export class CatsController {
 
   @Get()
   getAllCats() {
-    return 'all cats'
+    throw new HttpException('api is broken', 401)
   }
 
   @Get(':id')
