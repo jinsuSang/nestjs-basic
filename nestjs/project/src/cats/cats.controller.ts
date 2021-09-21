@@ -1,20 +1,17 @@
 import {
   Controller,
-  Delete,
   Get,
-  HttpException,
-  Param,
-  ParseIntPipe,
-  Patch,
   Post,
-  Put,
   UseFilters,
   UseInterceptors,
 } from '@nestjs/common'
 import { CatsService } from './cats.service'
 import { HttpExceptionFilter } from '../common/exceptions/http-exception.filter'
-import { PositiveIntPipe } from '../common/pipes/positive-int.pipe'
 import { SuccessInterceptor } from '../common/interceptors/success.interceptor'
+import { Body } from '@nestjs/common'
+import { CatRequestDto } from './dto/cats.request.dto'
+import { ApiOperation, ApiResponse } from '@nestjs/swagger'
+import { ReadonlyCatDto } from './dto/cat.dto'
 
 @Controller('cats')
 @UseInterceptors(SuccessInterceptor)
@@ -22,34 +19,42 @@ import { SuccessInterceptor } from '../common/interceptors/success.interceptor'
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
+  @ApiOperation({ summary: '정보 가져오기' })
   @Get()
-  getAllCats() {
-    // throw new HttpException('api is broken', 401)
-    return { cats: 'all cats' }
+  getCurrentCat() {
+    return 'current cat'
   }
 
-  @Get(':id')
-  getCat(@Param('id', ParseIntPipe, PositiveIntPipe) id: number) {
-    return 'cat'
-  }
-
+  @ApiResponse({
+    status: 500,
+    description: 'server error',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'success',
+    type: ReadonlyCatDto,
+  })
+  @ApiOperation({ summary: '회원가입' })
   @Post()
-  createCat() {
-    return 'create cat'
+  async signUp(@Body() body: CatRequestDto) {
+    return await this.catsService.signUp(body)
   }
 
-  @Put(':id')
-  updateCat() {
-    return 'update cat'
+  @ApiOperation({ summary: '로그인' })
+  @Post('login')
+  logIn() {
+    return 'login'
   }
 
-  @Patch(':id')
-  updatePartialCat() {
-    return
+  @ApiOperation({ summary: '로그아웃' })
+  @Post('logout')
+  logOut() {
+    return 'logout'
   }
 
-  @Delete(':id')
-  deleteCat() {
-    return 'delete cat'
+  @ApiOperation({ summary: '이미지 업로드' })
+  @Post('upload')
+  uploadCatImag() {
+    return 'upload'
   }
 }
