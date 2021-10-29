@@ -2,7 +2,6 @@
 
 - import 부분이 노란색으로 밑줄 쳐져 있을 때 대처법 - `tsconfigRootDir` 추가
 
-  ![image-20210905191046951](README.assets/image-20210905191046951.png)
 
 ## Controller
 
@@ -191,4 +190,3 @@ export class SuccessInterceptor implements NestInterceptor {
 
 
 
-![image-20210921160758212](README.assets/image-20210921160758212.png)
