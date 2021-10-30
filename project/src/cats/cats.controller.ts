@@ -1,20 +1,17 @@
 import {
+  Body,
   Controller,
-  Delete,
   Get,
-  HttpException,
-  HttpStatus,
-  Param,
-  ParseIntPipe,
-  Patch,
   Post,
-  Put,
   UseFilters,
   UseInterceptors,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { HttpExceptionFilter } from '../common/http-exception.filter';
 import { SuccessInterceptor } from '../common/success.interceptor';
+import { CatRequestDto } from './dto/cats.request.dto';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ReadOnlyCatDto } from './dto/cat.dto';
 
 @Controller('cats')
 @UseInterceptors(SuccessInterceptor)
@@ -22,33 +19,42 @@ import { SuccessInterceptor } from '../common/success.interceptor';
 export class CatsController {
   constructor(private readonly catService: CatsService) {}
 
+  @ApiOperation({ summary: 'get current cat' })
   @Get()
-  getAllCats() {
-    return 'all cat';
+  getCurrentCat() {
+    return 'current cat';
   }
 
-  @Get(':id')
-  getOneCat(@Param('id', ParseIntPipe) id: number) {
-    return `cat ${id}`;
-  }
-
+  @ApiOperation({ summary: 'signup' })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal Server Error',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Request Success',
+    type: ReadOnlyCatDto,
+  })
   @Post()
-  createCat() {
-    return 'create cat';
+  async signup(@Body() catRequestDto: CatRequestDto) {
+    return await this.catService.signup(catRequestDto);
   }
 
-  @Put(':id')
-  updateCat() {
-    return 'update cat';
+  @ApiOperation({ summary: 'login' })
+  @Post('login')
+  login() {
+    return 'login';
   }
 
-  @Patch(':id')
-  updateParserCat() {
-    return 'update parser';
+  @ApiOperation({ summary: 'logout' })
+  @Post('logout')
+  logout() {
+    return 'logout';
   }
 
-  @Delete(':id')
-  deleteCat() {
-    return 'delete';
+  @ApiOperation({ summary: 'upload cat image' })
+  @Post('upload/img')
+  uploadCatImg() {
+    return 'uploadImg';
   }
 }
