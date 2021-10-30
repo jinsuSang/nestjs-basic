@@ -16,12 +16,10 @@ export class CatsRepository {
     return await this.catModel.create(cat);
   }
 
-  // async findCatByIdWithoutPassword(
-  //   catId: string,
-  // ): Promise<CatCurrentDto | null> {
-  //   const cat = await this.catModel.findById(catId).select('-password');
-  //   return cat;
-  // }
+  async findCatByIdWithoutPassword(catId: string): Promise<Cat | null> {
+    const cat = await this.catModel.findById(catId).select('-password');
+    return cat;
+  }
 
   async findCatByEmail(email: string): Promise<Cat | null> {
     const cat = await this.catModel.findOne({ email });
