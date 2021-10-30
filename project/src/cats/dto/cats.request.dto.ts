@@ -1,2 +1,7 @@
 import { Cat } from '../cats.schema';
-export class CatRequestDto extends Cat {}
+import { PickType } from '@nestjs/swagger';
+export class CatRequestDto extends PickType(Cat, [
+  'email',
+  'name',
+  'password',
+] as const) {}
